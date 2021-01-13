@@ -1,0 +1,13 @@
+D:\KSMC project\LookUpFunction\LookUpTypes\LookUpTypes\bin\Debug\netcoreapp3.1\LookUpTypes.exe
+D:\KSMC project\LookUpFunction\LookUpTypes\LookUpTypes\bin\Debug\netcoreapp3.1\LookUpTypes.deps.json
+D:\KSMC project\LookUpFunction\LookUpTypes\LookUpTypes\bin\Debug\netcoreapp3.1\LookUpTypes.runtimeconfig.json
+D:\KSMC project\LookUpFunction\LookUpTypes\LookUpTypes\bin\Debug\netcoreapp3.1\LookUpTypes.runtimeconfig.dev.json
+D:\KSMC project\LookUpFunction\LookUpTypes\LookUpTypes\bin\Debug\netcoreapp3.1\LookUpTypes.dll
+D:\KSMC project\LookUpFunction\LookUpTypes\LookUpTypes\bin\Debug\netcoreapp3.1\LookUpTypes.pdb
+D:\KSMC project\LookUpFunction\LookUpTypes\LookUpTypes\obj\Debug\netcoreapp3.1\LookUpTypes.csprojAssemblyReference.cache
+D:\KSMC project\LookUpFunction\LookUpTypes\LookUpTypes\obj\Debug\netcoreapp3.1\LookUpTypes.AssemblyInfoInputs.cache
+D:\KSMC project\LookUpFunction\LookUpTypes\LookUpTypes\obj\Debug\netcoreapp3.1\LookUpTypes.AssemblyInfo.cs
+D:\KSMC project\LookUpFunction\LookUpTypes\LookUpTypes\obj\Debug\netcoreapp3.1\LookUpTypes.csproj.CoreCompileInputs.cache
+D:\KSMC project\LookUpFunction\LookUpTypes\LookUpTypes\obj\Debug\netcoreapp3.1\LookUpTypes.dll
+D:\KSMC project\LookUpFunction\LookUpTypes\LookUpTypes\obj\Debug\netcoreapp3.1\LookUpTypes.pdb
+D:\KSMC project\LookUpFunction\LookUpTypes\LookUpTypes\obj\Debug\netcoreapp3.1\LookUpTypes.genruntimeconfig.cache
