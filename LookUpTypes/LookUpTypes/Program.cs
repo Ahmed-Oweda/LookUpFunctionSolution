@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LookUpTypes
 {
@@ -34,15 +35,16 @@ namespace LookUpTypes
                 new LookUp(10,"D1","Doctor1",thirdlookup),
                 new LookUp(11,"D2","Doctor2",thirdlookup),
                 new LookUp(12,"D3","Doctor3",thirdlookup)
-            ,} ;
+            ,};
 
             List<LookUp> lastLookUpCombination = new List<LookUp>() {
-                new LookUp(1,"H1","Hospital2",firstlookup),
-               
-                //new LookUp(4,"C1","Clinic2",secondlookup),
+                new LookUp(2,"H2","Hospital2",firstlookup),
 
-                new LookUp(11,"D2","Doctor1",thirdlookup)
-                
+               new LookUp(6,"C3","Clinic3",secondlookup),
+
+                new LookUp(10,"D1","Doctor1",thirdlookup)
+
+
             ,};
 
 
@@ -54,97 +56,97 @@ namespace LookUpTypes
             feature.LookUpTypes = lookuptypesList;
 
 
-            var result = MakeCombinationsOfLookUps(feature, lookupsList,lastLookUpCombination);
+            var result = MakeCombinationsOfLookUps(lookupsList, lookuptypesList, lastLookUpCombination);
 
 
-           
+            Console.ReadKey();
 
         }
 
-        public static List<LookUp> MakeCombinationsOfLookUps( PodFeature feature, List<LookUp> LookUpList , List<LookUp> lastLookUpCombination = null)
+        private static bool RecursiveLookUps(List<LookUp> lookUpList,
+            List<LookUp> generateList, List<LookUp> lastLookUpCombination, List<LookUpType> lookUpTypes, LookUpType lookUpType)
         {
-            //filter the LookUps List here according to the feature Lookup types
-            // function filter ()
+            var added = false;
 
-            //List<string> hospitals = new List<string> { "Hospital1", "Hospital2", "Hospital3" };
-            //List<string> clinics = new List<string> { "Clinic1", "Clinic2", "Clinic3" };
-            //List<string> doctors = new List<string> { "doctor1", "doctor2", "doctor3" };
-
-            //List<List<string>> LookUpTypesSeperated = new List<List<string>> { hospitals, clinics, doctors };
-            // return new list of lookups seperatly 
-
-            var filteredList = new List<List<LookUp>>() { };
-            
-            LookUpType previousType = new LookUpType();
-
-            for (int i = 0; i < LookUpList.Count; i++)
+            if (lookUpType == null)
             {
-                LookUpType currentType = LookUpList[i].Lookuptype;
+                lookUpType = lookUpTypes.FirstOrDefault();
 
-                if (currentType.Name == previousType.Name)
+            }
+
+            if (lookUpType != null)
+            {
+                var currentLookup = lastLookUpCombination.FirstOrDefault(t => t.Lookuptype.Id == lookUpType.Id);
+
+                if (!lookUpTypes.Any(t => t.Id > lookUpType.Id))
                 {
-                    previousType = currentType;
-                    continue;
+                    currentLookup = SetCurrentLookup(lookUpList, lookUpType, currentLookup, ref added);
                 }
                 else
                 {
-                    var matchedItemsOfTheSameLookUpTypes = LookUpList.FindAll(lookup => lookup.Lookuptype.Name == currentType.Name);
-                    var tempList = new List<LookUp>(matchedItemsOfTheSameLookUpTypes);
-
-                    if(!filteredList.Contains(tempList) && feature.LookUpTypes.Exists(t => t.Name == currentType.Name))
+                    if (currentLookup == null)
                     {
-                        filteredList.Add(tempList);
-                        previousType = currentType;
+                        currentLookup = lookUpList.FirstOrDefault(t =>
+                            t.Lookuptype.Id == lookUpType.Id);
                     }
+                    added = RecursiveLookUps(lookUpList, generateList, lastLookUpCombination,
+                        lookUpTypes, lookUpTypes.FirstOrDefault(t => t.Id > lookUpType.Id));
 
-                    
-
-                    previousType = currentType;
-                    
+                    if (added)
+                    {
+                        currentLookup = SetCurrentLookup(lookUpList, lookUpType, currentLookup, ref added);
+                    }
                 }
 
+                if (currentLookup != null)
+                {
+                    generateList.Add(currentLookup);
+                }
 
             }
 
 
 
-            var result = new List<LookUp>() { };
-            if (lastLookUpCombination == null)
+
+            return added;
+        }
+
+        private static LookUp SetCurrentLookup(List<LookUp> lookUpList, LookUpType lookUpType, LookUp currentLookup, ref bool added)
+        {
+            if (currentLookup != null)
             {
-                //this is the first combination
-
-
-                for (int i = 0; i < filteredList.Count; i++)
+                if (lookUpList.Any(t => t.Lookuptype.Id == lookUpType.Id && t.Id > currentLookup.Id))
                 {
-                    result.Add(filteredList[i][0]);
+                    currentLookup = lookUpList.FirstOrDefault(t =>
+                        t.Lookuptype.Id == lookUpType.Id && t.Id > currentLookup.Id);
+                    added = false;
                 }
+                else
+                {
+                    currentLookup = lookUpList.FirstOrDefault(t =>
+                        t.Lookuptype.Id == lookUpType.Id);
 
-               
-                return result;
-
+                    added = true;
+                }
             }
             else
             {
-               
-
-              
-
-                for (int i = 0; i < filteredList.Count; i++)
-                {
-                    int usedLookUpIndex = filteredList[i].FindIndex(t => t.Name == lastLookUpCombination[i].Name);
-                    try
-                    {
-                        result.Add(filteredList[i][usedLookUpIndex + 1]);
-                    }
-                    catch (Exception)
-                    {
-
-                        result.Add(filteredList[i][0]);
-                    }
-                }
-
-                return result;
+                currentLookup = lookUpList.FirstOrDefault(t =>
+                    t.Lookuptype.Id == lookUpType.Id);
             }
+
+            return currentLookup;
         }
+
+        public static List<LookUp> MakeCombinationsOfLookUps(List<LookUp> lookUpList, List<LookUpType> lookupTypesList, List<LookUp> lastLookUpCombination = null)
+        {
+            var output = new List<LookUp>();
+
+            RecursiveLookUps(lookUpList, output, lastLookUpCombination, lookupTypesList, null);
+
+            return output;
+        }
+
+
     }
 }
